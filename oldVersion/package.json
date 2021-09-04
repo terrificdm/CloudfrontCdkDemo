@@ -1,0 +1,27 @@
+{
+  "name": "cloufront_cdk_demo",
+  "version": "1.0.0",
+  "bin": {
+    "cloufront_cdk_demo": "bin/cloufront_cdk_demo.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/node": "10.17.27",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-cloudfront": "*",
+    "@aws-cdk/aws-cloudfront-origins": "*",
+    "@aws-cdk/aws-ec2": "*",
+    "@aws-cdk/aws-lambda": "*",
+    "@aws-cdk/aws-s3": "*",
+    "@aws-cdk/aws-s3-deployment": "*",
+    "@aws-cdk/aws-s3-assets": "*",
+    "@aws-cdk/core": "*",
+    "source-map-support": "^0.5.16"
+  }
+}
