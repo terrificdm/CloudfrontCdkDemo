@@ -6,9 +6,9 @@ import { InfraCdkStack } from '../lib/infra_cdk-stack';
 
 const app = new cdk.App();
 new InfraCdkStack(app, 'InfraCdkStack', {
-  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'us-east-1' }
+  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION }
 });
 
 new CloudfrontCdkStack(app, 'CloudfrontCdkStack', {
-  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'us-east-1' }
+  env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'us-east-1' } // L@E must be deployed from us-east-1
 });
