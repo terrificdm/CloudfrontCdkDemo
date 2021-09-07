@@ -23,6 +23,7 @@
     "@aws-cdk/aws-s3-deployment": "*",
     "@aws-cdk/aws-ssm": "*",
     "@aws-cdk/core": "*",
+    "@aws-cdk/custom-resources": "*",
     "source-map-support": "^0.5.16"
   }
 }

@@ -5,6 +5,7 @@ import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as iam from '@aws-cdk/aws-iam';
+import {EdgeFunction} from '@aws-cdk/aws-cloudfront/lib/experimental';
 
 export class CloudfrontCdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -12,6 +13,7 @@ export class CloudfrontCdkStack extends cdk.Stack {
     
     /* Import the existing S3 bucket as CloudFront's S3 origin*/
     const s3BucketName = ssm.StringParameter.fromStringParameterName(this, 'BuckerName', 's3BucketName').stringValue;
+
     const s3Origin = s3.Bucket.fromBucketName(this, 'ImportBucket', s3BucketName);
     
     const oai = new cloudfront.OriginAccessIdentity(this, 'OAI'); // Create an OAI for CloudFront to use
@@ -64,20 +66,27 @@ export class CloudfrontCdkStack extends cdk.Stack {
       headerBehavior: cloudfront.OriginRequestHeaderBehavior.allowList('CloudFront-Viewer-Country')
     }); // Create a custom origin request policy reserved for L@E
     
-    // Create a iam role for L@E
-    const edge_role = new iam.Role(this, 'EdgeRole', {
-      assumedBy: new iam.CompositePrincipal(
-        new iam.ServicePrincipal('lambda.amazonaws.com'),
-        new iam.ServicePrincipal('edgelambda.amazonaws.com')
-      )
-    });
-    edge_role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')); 
+    // // Create a iam role for L@E, only needed if you want to use a "normal" lambda.Function
+    // const edge_role = new iam.Role(this, 'EdgeRole', {
+    //   assumedBy: new iam.CompositePrincipal(
+    //     new iam.ServicePrincipal('lambda.amazonaws.com'),
+    //     new iam.ServicePrincipal('edgelambda.amazonaws.com')
+    //   )
+    // });
+    // edge_role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')); 
     
-    const lambdaFunc = new lambda.Function(this, 'LambdaFunction', {
+    // const lambdaFunc = new lambda.Function(this, 'LambdaFunction', {
+    //   runtime: lambda.Runtime.NODEJS_14_X,
+    //   handler: 'index.handler',
+    //   code: lambda.Code.fromAsset('./functions/lambda'),
+    //   role: edge_role
+    // }); //Use a "normal" lambda.Function to deploy L@E
+    
+    const lambdaFunc = new EdgeFunction(this, 'LambdaFunction', {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('./functions/lambda'),
-      role: edge_role
+      stackId: 'LambdaEdgeStack'
     });
     
     const dist = distribution.node.defaultChild as cloudfront.CfnDistribution;

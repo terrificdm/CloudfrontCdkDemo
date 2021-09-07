@@ -4,6 +4,7 @@ import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as assets from '@aws-cdk/aws-s3-assets';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as ssm from '@aws-cdk/aws-ssm';
+// import * as customresource from '@aws-cdk/custom-resources'
 
 export class InfraCdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -44,7 +45,7 @@ export class InfraCdkStack extends cdk.Stack {
       vpc: vpc,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
       machineImage: amznLinux,
-      keyName:'demo' // You need to modify the value of keyName with your own key-pairs name!
+      keyName:'demo-tokyo' // You need to modify the value of keyName with your own key-pairs name!
     });
     
     appAssets.grantRead(appInstance.role);
@@ -73,11 +74,45 @@ export class InfraCdkStack extends cdk.Stack {
       parameterName: 's3BucketName',
       stringValue: staticBucket.bucketName
     });
-    
     new ssm.StringParameter(this, 'EC2PublicDomainName', {
       description: 'EC2 Public Domain Name',
       parameterName: 'ec2PublicDnsName',
       stringValue: appInstance.instancePublicDnsName
     });
+    
+    // /* Store S3 bucket arn and EC2 public domain name in the SSM Parameter Store, only needed when CloudfrontStack is not within the same region with InfraStack */ 
+    // if (process.env.region === 'us-east-1') {
+    //   new ssm.StringParameter(this, 'BuckerName', {
+    //     description: 'S3 Bucket Name',
+    //     parameterName: 's3BucketName',
+    //     stringValue: staticBucket.bucketName
+    //   });
+    //   new ssm.StringParameter(this, 'EC2PublicDomainName', {
+    //     description: 'EC2 Public Domain Name',
+    //     parameterName: 'ec2PublicDnsName',
+    //     stringValue: appInstance.instancePublicDnsName
+    //   });
+    // } else {
+    //   new customresource.AwsCustomResource(this, 'BuckerName', {
+    //     onUpdate:{
+    //       service: 'SSM',
+    //       action: 'putParameter',
+    //       parameters: {Name: 's3BucketName', Value: staticBucket.bucketName, Description: 'S3 Bucket Name', Type: 'String', Overwrite: true},
+    //       region: 'us-east-1',
+    //       physicalResourceId: customresource.PhysicalResourceId.of(Date.now().toString())
+    //     },
+    //     policy: customresource.AwsCustomResourcePolicy.fromSdkCalls({resources: customresource.AwsCustomResourcePolicy.ANY_RESOURCE})
+    //   });
+    //   new customresource.AwsCustomResource(this, 'EC2PublicDomainName', {
+    //     onUpdate:{
+    //       service: 'SSM',
+    //       action: 'putParameter',
+    //       parameters: {Name: 'ec2PublicDnsName', Value: appInstance.instancePublicDnsName, Description: 'EC2 Public Domain Name', Type: 'String', Overwrite: true},
+    //       region: 'us-east-1',
+    //       physicalResourceId: customresource.PhysicalResourceId.of(Date.now().toString())
+    //     },
+    //     policy: customresource.AwsCustomResourcePolicy.fromSdkCalls({resources: customresource.AwsCustomResourcePolicy.ANY_RESOURCE})
+    //   });
+    // }
   }
 }
