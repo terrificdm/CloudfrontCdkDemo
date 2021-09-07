@@ -45,7 +45,7 @@ export class InfraCdkStack extends cdk.Stack {
       vpc: vpc,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
       machineImage: amznLinux,
-      keyName:'demo-tokyo' // You need to modify the value of keyName with your own key-pairs name!
+      keyName:'demo' // You need to modify the value of keyName with your own key-pairs name!
     });
     
     appAssets.grantRead(appInstance.role);
