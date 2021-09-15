@@ -8,14 +8,14 @@
 * Make sure you follow the [AWS CDK Prerequisites](https://docs.aws.amazon.com/cdk/latest/guide/work-with.html#work-with-prerequisites) before you build the project.
 * Clone this project and change the directory to the root folder of the project, and run below commands:
 ```bash
-$ npm install -g aws-cdk
-$ npm install  
-$ cdk bootstrap
+npm install -g aws-cdk
+npm install  
+cdk bootstrap
 ```
 
 # Deploy  
 * Run commands as below:
 ```bash
-$ cdk deploy InfraCdkStack  
-$ cdk deploy CloudfrontCdkStack
+cdk deploy InfraCdkStack  
+cdk deploy CloudfrontCdkStack
 ```
