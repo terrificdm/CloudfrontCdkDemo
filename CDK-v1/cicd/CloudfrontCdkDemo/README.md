@@ -8,6 +8,7 @@
 ```bash
 npm install -g aws-cdk
 npm install  
+export CDK_NEW_BOOTSTRAP=1 
 cdk bootstrap
 cdk deploy InfraCdkStack
 ```  

@@ -1,13 +1,15 @@
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as s3deploy from '@aws-cdk/aws-s3-deployment';
-import * as assets from '@aws-cdk/aws-s3-assets';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ssm from '@aws-cdk/aws-ssm';
+import * as cdk from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as assets from 'aws-cdk-lib/aws-s3-assets';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ssm from 'aws-cdk-lib/aws-ssm';
 // import * as customresource from '@aws-cdk/custom-resources'
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 
-export class InfraCdkStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class InfraCdkStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     /* Create a S3 bucket to hold flask static content */

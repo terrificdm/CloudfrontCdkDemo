@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
-import * as cdk from 'aws-cdk-lib';
+import * as cdk from '@aws-cdk/core';
 import { CloudfrontCdkStack } from '../lib/cloudfront_cdk-stack';
 import { InfraCdkStack } from '../lib/infra_cdk-stack';
 import { PipelineStack } from '../lib/pipeline-stack';

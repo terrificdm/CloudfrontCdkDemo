@@ -1,12 +1,10 @@
-import * as cdk from 'aws-cdk-lib';
-import * as codecommit from 'aws-cdk-lib/aws-codecommit';
-import { CodePipeline, CodePipelineSource, ShellStep, ManualApprovalStep } from 'aws-cdk-lib/pipelines';
+import * as cdk from '@aws-cdk/core';
+import * as codecommit from '@aws-cdk/aws-codecommit';
+import { CodePipeline, CodePipelineSource, ShellStep, ManualApprovalStep } from '@aws-cdk/pipelines';
 import { PipelineStage } from './pipeline-stage';
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
 
-export class PipelineStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+export class PipelineStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     
     const repo = new codecommit.Repository(this, 'CloudFrontCDKRepo', {

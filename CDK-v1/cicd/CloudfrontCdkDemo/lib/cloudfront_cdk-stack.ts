@@ -1,21 +1,20 @@
-import * as cdk from 'aws-cdk-lib';
-import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
-import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as ssm from 'aws-cdk-lib/aws-ssm';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as origins from '@aws-cdk/aws-cloudfront-origins';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as ssm from '@aws-cdk/aws-ssm';
+import * as iam from '@aws-cdk/aws-iam';
+import {EdgeFunction} from '@aws-cdk/aws-cloudfront/lib/experimental';
 
-export interface CloufrontCdkStackProps extends StackProps {
+export interface CloufrontCdkStackProps extends cdk.StackProps {
   environment?: string
 }; //Define a parameter(prop) of CloufrontCdkStack for customCachePolicy and customOriginRequestPolicy
 
-export class CloudfrontCdkStack extends Stack {
+export class CloudfrontCdkStack extends cdk.Stack {
   public readonly cfUrl: cdk.CfnOutput;
   
-  constructor(scope: Construct, id: string, props: CloufrontCdkStackProps) {
+  constructor(scope: cdk.Construct, id: string, props: CloufrontCdkStackProps) {
     super(scope, id, props);
     
     /* Import the existing S3 bucket as CloudFront's S3 origin*/
@@ -89,7 +88,7 @@ export class CloudfrontCdkStack extends Stack {
     //   role: edge_role
     // }); //Use a "normal" lambda.Function to deploy L@E
     
-    const lambdaFunc = new cloudfront.experimental.EdgeFunction(this, 'LambdaFunction', {
+    const lambdaFunc = new EdgeFunction(this, 'LambdaFunction', {
       runtime: lambda.Runtime.NODEJS_14_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('./functions/lambda'),
