@@ -4,7 +4,7 @@ import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import * as assets from 'aws-cdk-lib/aws-s3-assets';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
-// import * as customresource from '@aws-cdk/custom-resources'
+// import * as customresource from 'aws-cdk-lib/custom-resources'
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
