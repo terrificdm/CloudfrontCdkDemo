@@ -17,7 +17,7 @@ export class PipelineStack extends Stack {
       pipelineName: 'CloudfrontPipeline',
       synth: new ShellStep('Synth', {
         input: CodePipelineSource.codeCommit(repo, 'master'),
-        commands: ['export NPM_CONFIG_UNSAFE_PERM=true', 'npm ci', 'npm run build', 'npx cdk synth ']
+        commands: ['npm ci', 'npm run build', 'npx cdk synth ']
       })
     });
     
